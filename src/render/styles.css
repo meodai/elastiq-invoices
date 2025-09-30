@@ -1,0 +1,343 @@
+/* Swiss QR Invoice Styles - Print Optimized */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'BeausiteClassic', 'Helvetica', 'Arial', sans-serif;
+  font-size: 10pt;
+  line-height: 1.4;
+  color: #000;
+  background: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+/* Print styles */
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .page-break {
+    page-break-after: always;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* A4 Page dimensions */
+.invoice-page {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  padding: 20mm;
+  position: relative;
+  background: #fff;
+}
+
+/* Header section */
+.invoice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20mm;
+  /* min-height: 40mm; */
+}
+
+.company-info {
+  flex: 1;
+  max-width: 85mm;
+  overflow: visible;
+}
+
+.company-logo {
+  margin-bottom: 3mm;
+  overflow: visible;
+  height: 12mm;
+  width: 60mm;
+}
+
+.company-logo svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+  object-fit: contain;
+}
+
+.company-name {
+  font-size: 9pt;
+  font-weight: 600;
+  color: #333;
+}
+
+.company-address {
+  font-size: 9pt;
+  line-height: 1.3;
+  color: #666;
+}
+
+.invoice-meta {
+  flex: 1;
+  text-align: right;
+  max-width: 85mm;
+}
+
+.invoice-title {
+  font-size: 18pt;
+  font-weight: 600;
+  margin-bottom: 5mm;
+  color: #333;
+}
+
+.invoice-details {
+  font-size: 10pt;
+  line-height: 1.5;
+}
+
+.invoice-details dt {
+  font-weight: 600;
+  display: inline-block;
+  width: 25mm;
+}
+
+.invoice-details dd {
+  display: inline;
+  margin-left: 0;
+}
+
+/* Debtor section */
+.debtor-section {
+  margin-bottom: 20mm;
+}
+
+.debtor-label {
+  font-size: 8pt;
+  color: #666;
+  margin-bottom: 2mm;
+  text-transform: uppercase;
+  letter-spacing: 0.5pt;
+}
+
+.debtor-address {
+  font-size: 11pt;
+  line-height: 1.4;
+}
+
+/* Line items table */
+.line-items {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15mm;
+  font-size: 9pt;
+}
+
+.line-items th {
+  border-bottom: 1px solid #000;
+  padding: 3mm;
+  text-align: left;
+  font-weight: 600;
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 0.3pt;
+}
+
+.line-items th:first-child {
+  padding-left: 0;
+}
+
+.line-items th:last-child {
+  padding-right: 0;
+}
+
+.line-items td {
+  border-bottom: 1px solid #000;
+  padding: 3mm;
+  vertical-align: top;
+}
+.line-items td:first-child {
+  padding-left: 0;
+}
+
+.line-items td:last-child {
+  padding-right: 0;
+}
+
+.line-items .description {
+  width: 55%;
+}
+
+.line-items .quantity,
+.line-items .unit-price,
+.line-items .total {
+  width: 15%;
+  text-align: right;
+}
+
+/* Totals section */
+.totals-section {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 15mm;
+}
+
+.totals-table {
+  width: 90mm;
+  border-collapse: collapse;
+  font-size: 9pt;
+}
+
+.totals-table td {
+  padding: 2mm 3mm;
+  border-bottom: 1px solid #000;
+}
+
+.totals-table td:first-child {
+  padding-left: 0;
+}
+
+.totals-table td:last-child {
+  padding-right: 0;
+}
+
+.totals-table .label {
+  text-align: left;
+  font-weight: normal;
+}
+
+.totals-table .amount {
+  text-align: right;
+  font-weight: 600;
+}
+
+.totals-table .total-row {
+  border-top: 2px solid #333;
+  font-weight: 600;
+  font-size: 10pt;
+}
+
+.totals-table .total-row td {
+  border-bottom: 2px solid #333;
+  padding-top: 2mm;
+  padding-bottom: 2mm;
+  font-size: 10pt;
+}
+
+/* Notes section */
+.notes-section {
+  margin-bottom: 20mm;
+}
+
+.notes-label {
+  font-weight: 600;
+  font-size: 10pt;
+  margin-bottom: 3mm;
+  color: #333;
+}
+
+.notes-content {
+  font-size: 9pt;
+  line-height: 1.5;
+  color: #666;
+  max-width: 120mm;
+}
+
+/* QR-Bill section - CRITICAL: Maintain exact dimensions for compliance */
+.qr-bill-section {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 105mm; /* Swiss QR-bill standard height */
+  border-top: 1px dashed #666;
+  padding: 0;
+  margin: 0;
+  background: #fff;
+}
+
+.qr-bill-container {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* QR-Bill SVG container - preserve exact dimensions */
+.qr-bill-container svg {
+  width: 210mm !important;
+  height: 105mm !important;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+/* Ensure main content doesn't overlap with QR-bill */
+.invoice-content {
+  margin-bottom: 110mm; /* Leave space for QR-bill */
+}
+
+/* Utility classes */
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-bold {
+  font-weight: 600;
+}
+
+.text-small {
+  font-size: 8pt;
+}
+
+.text-large {
+  font-size: 12pt;
+}
+
+.mb-small {
+  margin-bottom: 3mm;
+}
+
+.mb-medium {
+  margin-bottom: 5mm;
+}
+
+.mb-large {
+  margin-bottom: 10mm;
+}
+
+/* Responsive adjustments for screen preview */
+@media screen and (max-width: 800px) {
+  .invoice-page {
+    width: 100%;
+    padding: 10mm;
+  }
+
+  .invoice-header {
+    flex-direction: column;
+    gap: 10mm;
+  }
+
+  .invoice-meta {
+    text-align: left;
+  }
+
+  .line-items {
+    font-size: 8pt;
+  }
+
+  .line-items th,
+  .line-items td {
+    padding: 2mm;
+  }
+}

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="de-CH">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{documentType}} {{invoiceNumber}}</title>
+    <style>
+      {{styles}}
+    </style>
+  </head>
+  <body>
+    <div class="invoice-page">
+      <div class="invoice-content">
+        <!-- Header Section -->
+        <header class="invoice-header">
+          <div class="company-info">
+            <div class="company-logo">
+              {{logoSVG}}
+            </div>
+            <div class="company-name">{{companyName}}</div>
+            <div class="company-address">
+              {{companyStreet}}<br />
+              {{companyZip}} {{companyCity}}<br />
+              <br />
+              {{companyEmail}}
+            </div>
+          </div>
+
+          <div class="invoice-meta">
+            <h1 class="invoice-title">{{documentTitle}}</h1>
+            <dl class="invoice-details">
+              <dt>Nummer:</dt>
+              <dd>{{invoiceNumber}}</dd>
+              <br />
+
+              <dt>Datum:</dt>
+              <dd>{{issueDate}}</dd>
+              <br />
+
+              {{#if dueDate}}
+              <dt>Fällig:</dt>
+              <dd>{{dueDate}}</dd>
+              <br />
+              {{/if}}
+            </dl>
+          </div>
+        </header>
+
+        <!-- Debtor Section -->
+        <section class="debtor-section">
+          <div class="debtor-label">Rechnungsadresse</div>
+          <div class="debtor-address">
+            {{debtorName}}<br />
+            {{#if debtorStreet}}{{debtorStreet}}<br />{{/if}} {{#if debtorZip}}{{debtorZip}}
+            {{/if}}{{#if debtorCity}}{{debtorCity}}{{/if}}<br />
+          </div>
+        </section>
+
+        <!-- Line Items Table -->
+        <section class="line-items-section">
+          <table class="line-items">
+            <thead>
+              <tr>
+                <th class="description">Beschreibung</th>
+                <th class="quantity">Menge</th>
+                <th class="unit-price">Einzelpreis</th>
+                <th class="total">Betrag</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each lineItems}}
+              <tr>
+                <td class="description">{{description}}</td>
+                <td class="quantity">{{quantity}}</td>
+                <td class="unit-price">{{unitPrice}}</td>
+                <td class="total">{{total}}</td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Totals Section -->
+        <section class="totals-section">
+          <table class="totals-table">
+            <tr>
+              <td class="label">Zwischensumme:</td>
+              <td class="amount">{{currency}} {{subtotal}}</td>
+            </tr>
+            <tr>
+              <td class="label">MwSt {{taxRate}}%:</td>
+              <td class="amount">{{currency}} {{taxTotal}}</td>
+            </tr>
+            <tr class="total-row">
+              <td class="label">Gesamtbetrag:</td>
+              <td class="amount">{{currency}} {{total}}</td>
+            </tr>
+          </table>
+        </section>
+
+        <!-- Notes Section -->
+        {{#if notes}}
+        <section class="notes-section">
+          <div class="notes-label">Bemerkungen</div>
+          <div class="notes-content">{{notes}}</div>
+        </section>
+        {{/if}}
+
+        <!-- Payment Information -->
+        <section class="payment-info">
+          <div class="notes-label">Zahlungsinformationen</div>
+          <div class="notes-content">
+            Bitte verwenden Sie den beigefügten QR-Code für die Zahlung.<br />
+            Vielen Dank für Ihr Vertrauen!
+          </div>
+        </section>
+      </div>
+
+      <!-- Swiss QR-Bill Section - CRITICAL: Must maintain exact dimensions -->
+      <section class="qr-bill-section">
+        <div class="qr-bill-container">{{qrBillSVG}}</div>
+      </section>
+    </div>
+  </body>
+</html>
