@@ -177,9 +177,9 @@ Output:
     const companyName = config.company.name.replace(/[^a-zA-Z0-9]/g, '_');
     
     if (type === 'estimate') {
-      return `KOSTENVORANSCHLAG_${number}_${companyName}.pdf`;
+      return `Estimate_${number}_${companyName}.pdf`;
     } else {
-      return `RECHNUNG_${number}_${companyName}.pdf`;
+      return `Invoice_${number}_${companyName}.pdf`;
     }
   }
 

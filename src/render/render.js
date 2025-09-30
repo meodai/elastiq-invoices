@@ -14,7 +14,7 @@ class InvoiceRenderer {
     this.templatePath = path.join(__dirname, 'template.html');
     this.stylesPath = path.join(__dirname, 'styles.css');
     this.fontsPath = path.join(__dirname, 'fonts.css');
-    this.logoPath = path.join(__dirname, 'logo/diluno.svg');
+    this.logoPath = path.join(__dirname, 'logo.svg');
   }
 
   /**
@@ -81,7 +81,12 @@ class InvoiceRenderer {
       const combinedStyles = fontsContent + '\n\n' + stylesContent;
 
       // Prepare template data
-      const templateData = this.prepareTemplateData(invoice, qrBillSVG, combinedStyles, logoContent);
+      const templateData = this.prepareTemplateData(
+        invoice,
+        qrBillSVG,
+        combinedStyles,
+        logoContent
+      );
 
       // Simple template replacement (no external template engine needed)
       let html = templateContent;
@@ -119,8 +124,8 @@ class InvoiceRenderer {
 
     const templateData = {
       // Document info
-      documentType: isEstimate ? 'Kostenvoranschlag' : 'Rechnung',
-      documentTitle: isEstimate ? 'Kostenvoranschlag' : 'Rechnung',
+      documentType: isEstimate ? 'Estimate' : 'Invoice',
+      documentTitle: isEstimate ? 'Estimate' : 'Invoice',
       invoiceNumber: invoice.number,
       issueDate: this.formatDate(invoice.issueDate),
       dueDate: invoice.dueDate ? this.formatDate(invoice.dueDate) : null,

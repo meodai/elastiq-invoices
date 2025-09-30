@@ -30,6 +30,13 @@ body {
   .no-print {
     display: none !important;
   }
+
+  .page {
+    page-break-after: always;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 /* Page break HR - Forces QR code to new page */
@@ -69,8 +76,8 @@ body {
 .company-logo {
   margin-bottom: 3mm;
   overflow: visible;
-  height: 12mm;
-  width: 60mm;
+  max-width: 5cm;
+  height: auto;
 }
 
 .company-logo svg {
@@ -242,6 +249,7 @@ body {
 /* Notes section */
 .notes-section {
   margin-bottom: 20mm;
+  margin-top: 20mm;
 }
 
 .notes-label {

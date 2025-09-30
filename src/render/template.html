@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de-CH">
+<html lang="en-CH">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -48,7 +48,9 @@
 
         <!-- Debtor Section -->
         <section class="debtor-section">
-          <div class="debtor-label">Rechnungsadresse</div>
+          <div class="debtor-label">
+            Bill To
+          </div>
           <div class="debtor-address">
             {{debtorName}}<br />
             {{#if debtorStreet}}{{debtorStreet}}<br />{{/if}} {{#if debtorZip}}{{debtorZip}}
@@ -84,31 +86,28 @@
         <section class="totals-section">
           <table class="totals-table">
             <tr>
-              <td class="label">Gesamtstunden:</td>
+              <td class="label">Total Hours</td>
               <td class="amount">{{totalHours}} h</td>
             </tr>
             <tr>
-              <td class="label">Zwischensumme:</td>
+              <td class="label">Subtotal</td>
               <td class="amount">{{currency}} {{subtotal}}</td>
             </tr>
             <tr>
-              <td class="label">MwSt {{taxRate}}%:</td>
+              <td class="label">VAT {{taxRate}}%</td>
               <td class="amount">{{currency}} {{taxTotal}}</td>
             </tr>
             <tr class="total-row">
-              <td class="label">Gesamtbetrag:</td>
+              <td class="label">Total</td>
               <td class="amount">{{currency}} {{total}}</td>
             </tr>
           </table>
         </section>
 
-        <!-- Page break before QR code -->
-        <hr class="page-break-hr">
-
         <!-- Notes Section -->
         {{#if notes}}
         <section class="notes-section">
-          <div class="notes-label">Bemerkungen</div>
+          <div class="notes-label">Comments</div>
           <div class="notes-content">{{notes}}</div>
         </section>
         {{/if}}
@@ -116,13 +115,12 @@
 
         <!-- Payment Information -->
         <section class="payment-info">
-          <div class="notes-label">Zahlungsinformationen</div>
+          <div class="notes-label">Payment Information</div>
           <div class="notes-content">
-            Bitte verwenden Sie den beigefügten QR-Code für die Zahlung.<br />
-            Vielen Dank für Ihr Vertrauen!
+            Please use the attached QR code for payment.<br />
+            Thank you for your trust!
           </div>
         </section>
-        
       </div>
       <!-- Swiss QR-Bill Section - CRITICAL: Must maintain exact dimensions -->
       <section class="qr-bill-section">
