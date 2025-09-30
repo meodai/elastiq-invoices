@@ -1,6 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const puppeteer = require('puppeteer');
+const { marked } = require('marked');
 const config = require('../config/env');
 const qrGenerator = require('../domain/qr');
 const logger = require('../utils/logger');
@@ -148,7 +149,7 @@ class InvoiceRenderer {
       totalHours: this.formatQuantity(invoice.getTotalHours()),
 
       // Content
-      notes: invoice.notes,
+      notes: this.processMarkdown(invoice.notes),
       qrBillSVG: qrBillSVG,
       logoSVG: logoContent,
       styles: stylesContent,
@@ -364,6 +365,30 @@ class InvoiceRenderer {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       }).format(quantity);
+    }
+  }
+
+  /**
+   * Process markdown content to HTML
+   * @param {string} markdown - Markdown content
+   * @returns {string} HTML content
+   */
+  processMarkdown(markdown) {
+    if (!markdown) return '';
+
+    try {
+      // Configure marked for safe rendering
+      marked.setOptions({
+        breaks: true, // Convert line breaks to <br>
+        gfm: true, // GitHub Flavored Markdown
+        sanitize: false, // We'll handle escaping ourselves if needed
+      });
+
+      return marked(markdown);
+    } catch (error) {
+      logger.warn('Failed to process markdown:', error.message);
+      // Fallback to escaped plain text if markdown processing fails
+      return this.escapeHtml(markdown);
     }
   }
 

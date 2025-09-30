@@ -13,13 +13,20 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "keywords": ["invoice", "harvest", "swiss-qr-bill", "pdf", "node.js"],
+  "keywords": [
+    "invoice",
+    "harvest",
+    "swiss-qr-bill",
+    "pdf",
+    "node.js"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
     "axios": "^1.6.0",
     "dayjs": "^1.11.10",
     "dotenv": "^16.3.1",
+    "marked": "^16.3.0",
     "puppeteer": "^21.5.0",
     "swissqrbill": "^4.2.0"
   },
@@ -36,6 +43,8 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "testMatch": ["**/test/**/*.test.js"]
+    "testMatch": [
+      "**/test/**/*.test.js"
+    ]
   }
 }

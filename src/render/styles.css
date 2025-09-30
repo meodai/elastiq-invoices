@@ -258,6 +258,51 @@ body {
   max-width: 120mm;
 }
 
+/* Markdown styling within notes */
+.notes-content h1,
+.notes-content h2,
+.notes-content h3 {
+  font-size: 10pt;
+  font-weight: 600;
+  margin: 3mm 0 2mm 0;
+  color: #333;
+}
+
+.notes-content h1 {
+  font-size: 11pt;
+}
+
+.notes-content p {
+  margin: 2mm 0;
+}
+
+.notes-content ul,
+.notes-content ol {
+  margin: 2mm 0;
+  padding-left: 5mm;
+}
+
+.notes-content li {
+  margin: 1mm 0;
+}
+
+.notes-content strong {
+  font-weight: 600;
+  color: #333;
+}
+
+.notes-content em {
+  font-style: italic;
+}
+
+.notes-content code {
+  font-family: 'Courier New', monospace;
+  font-size: 8pt;
+  background: #f5f5f5;
+  padding: 1mm;
+  border-radius: 1mm;
+}
+
 /* QR-Bill section - CRITICAL: Maintain exact dimensions for compliance */
 .qr-bill-section {
   position: absolute;
