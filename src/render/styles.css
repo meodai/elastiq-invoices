@@ -315,29 +315,3 @@ body {
 .mb-large {
   margin-bottom: 10mm;
 }
-
-/* Responsive adjustments for screen preview */
-@media screen and (max-width: 800px) {
-  .invoice-page {
-    width: 100%;
-    padding: 10mm;
-  }
-
-  .invoice-header {
-    flex-direction: column;
-    gap: 10mm;
-  }
-
-  .invoice-meta {
-    text-align: left;
-  }
-
-  .line-items {
-    font-size: 8pt;
-  }
-
-  .line-items th,
-  .line-items td {
-    padding: 2mm;
-  }
-}

@@ -108,6 +108,14 @@ class InvoiceDTO {
   }
 
   /**
+   * Calculate total hours from line items
+   * @returns {number} Total hours across all line items
+   */
+  getTotalHours() {
+    return this.items.reduce((sum, item) => sum + item.quantity, 0);
+  }
+
+  /**
    * Get formatted currency amount
    * @param {number} amount - Amount to format
    * @returns {string} Formatted amount

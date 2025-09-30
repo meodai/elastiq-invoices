@@ -145,6 +145,7 @@ class InvoiceRenderer {
       taxTotal: this.formatAmount(invoice.taxTotal),
       taxRate: this.calculateTaxRate(invoice),
       total: this.formatAmount(invoice.total),
+      totalHours: this.formatQuantity(invoice.getTotalHours()),
 
       // Content
       notes: invoice.notes,
@@ -158,7 +159,7 @@ class InvoiceRenderer {
       subtotal: templateData.subtotal,
       taxTotal: templateData.taxTotal,
       taxRate: templateData.taxRate,
-      total: templateData.total
+      total: templateData.total,
     });
 
     return templateData;

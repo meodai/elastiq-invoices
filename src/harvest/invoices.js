@@ -97,6 +97,84 @@ class HarvestInvoices {
 
     return { estimate, client: clientData };
   }
+
+  /**
+   * Get the most recent invoice
+   * @returns {Promise<object>} Most recent invoice data
+   */
+  async getLatestInvoice() {
+    logger.info('Fetching most recent invoice...');
+
+    try {
+      const response = await client.get('/invoices', {
+        per_page: 1,
+        page: 1,
+        sort_by: 'created_at',
+        sort_order: 'desc',
+      });
+
+      if (!response.invoices || response.invoices.length === 0) {
+        throw new Error('No invoices found');
+      }
+
+      const invoice = response.invoices[0];
+      logger.info(`Found most recent invoice: ${invoice.number} (ID: ${invoice.id})`);
+      return invoice;
+    } catch (error) {
+      logger.error('Failed to fetch latest invoice:', error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Get the most recent estimate
+   * @returns {Promise<object>} Most recent estimate data
+   */
+  async getLatestEstimate() {
+    logger.info('Fetching most recent estimate...');
+
+    try {
+      const response = await client.get('/estimates', {
+        per_page: 1,
+        page: 1,
+        sort_by: 'created_at',
+        sort_order: 'desc',
+      });
+
+      if (!response.estimates || response.estimates.length === 0) {
+        throw new Error('No estimates found');
+      }
+
+      const estimate = response.estimates[0];
+      logger.info(`Found most recent estimate: ${estimate.number} (ID: ${estimate.id})`);
+      return estimate;
+    } catch (error) {
+      logger.error('Failed to fetch latest estimate:', error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Get the most recent invoice with related client data
+   * @returns {Promise<{invoice: object, client: object}>} Most recent invoice and client data
+   */
+  async getLatestInvoiceWithClient() {
+    const invoice = await this.getLatestInvoice();
+    const clientData = await this.getClient(invoice.client.id);
+
+    return { invoice, client: clientData };
+  }
+
+  /**
+   * Get the most recent estimate with related client data
+   * @returns {Promise<{estimate: object, client: object}>} Most recent estimate and client data
+   */
+  async getLatestEstimateWithClient() {
+    const estimate = await this.getLatestEstimate();
+    const clientData = await this.getClient(estimate.client.id);
+
+    return { estimate, client: clientData };
+  }
 }
 
 module.exports = new HarvestInvoices();

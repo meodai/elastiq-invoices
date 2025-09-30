@@ -2,6 +2,7 @@
 
 const fs = require('fs').promises;
 const path = require('path');
+const config = require('../config/env');
 const harvestInvoices = require('../harvest/invoices');
 const dataMapper = require('../domain/mapping');
 const renderer = require('../render/render');
@@ -55,17 +56,19 @@ class InvoiceCLI {
 Swiss QR Invoice Generator
 
 Usage:
-  node src/cli/generate-invoice.js --id <ID> [--type <TYPE>]
+  node src/cli/generate-invoice.js [--id <ID>] [--type <TYPE>]
   
 Options:
-  --id <ID>       Harvest invoice or estimate ID (required)
+  --id <ID>       Harvest invoice or estimate ID (optional - uses most recent if not provided)
   --type <TYPE>   Document type: 'invoice' or 'estimate' (default: invoice)
   --help, -h      Show this help message
 
 Examples:
-  node src/cli/generate-invoice.js --id 12345
-  node src/cli/generate-invoice.js --id 12345 --type invoice
-  node src/cli/generate-invoice.js --id 67890 --type estimate
+  node src/cli/generate-invoice.js                              # Generate PDF for most recent invoice
+  node src/cli/generate-invoice.js --type estimate              # Generate PDF for most recent estimate
+  node src/cli/generate-invoice.js --id 12345                   # Generate PDF for specific invoice
+  node src/cli/generate-invoice.js --id 12345 --type invoice    # Generate PDF for specific invoice
+  node src/cli/generate-invoice.js --id 67890 --type estimate   # Generate PDF for specific estimate
 
 Environment:
   Make sure to copy .env.example to .env and configure your Harvest API credentials
@@ -78,23 +81,37 @@ Output:
 
   /**
    * Generate invoice PDF
-   * @param {string} id - Invoice/estimate ID
+   * @param {string|null} id - Invoice/estimate ID (optional - will fetch latest if not provided)
    * @param {string} type - Document type (invoice or estimate)
    */
   async generateInvoice(id, type) {
     try {
-      logger.info(`Starting ${type} generation for ID: ${id}`);
+      if (id) {
+        logger.info(`Starting ${type} generation for ID: ${id}`);
+      } else {
+        logger.info(`Starting ${type} generation for most recent ${type}`);
+      }
 
       // Fetch data from Harvest
       let harvestData, harvestClient;
-      if (type === 'invoice') {
+      if (type === 'invoice' && id) {
         const result = await harvestInvoices.getInvoiceWithClient(id);
         harvestData = result.invoice;
         harvestClient = result.client;
-      } else {
+      } else if (type === 'invoice' && !id) {
+        const result = await harvestInvoices.getLatestInvoiceWithClient();
+        harvestData = result.invoice;
+        harvestClient = result.client;
+        logger.info(`Using most recent invoice ID: ${harvestData.id}`);
+      } else if (type === 'estimate' && id) {
         const result = await harvestInvoices.getEstimateWithClient(id);
         harvestData = result.estimate;
         harvestClient = result.client;
+      } else if (type === 'estimate' && !id) {
+        const result = await harvestInvoices.getLatestEstimateWithClient();
+        harvestData = result.estimate;
+        harvestClient = result.client;
+        logger.info(`Using most recent estimate ID: ${harvestData.id}`);
       }
 
       logger.info(`Successfully fetched ${type} ${harvestData.number}`);
@@ -132,9 +149,13 @@ Output:
       console.error(`\n❌ Error: ${error.message}`);
 
       if (error.response?.status === 404) {
-        console.error(
-          `${type.charAt(0).toUpperCase() + type.slice(1)} with ID ${id} not found in Harvest.`
-        );
+        if (id) {
+          console.error(
+            `${type.charAt(0).toUpperCase() + type.slice(1)} with ID ${id} not found in Harvest.`
+          );
+        } else {
+          console.error(`No ${type}s found in Harvest or failed to fetch the most recent ${type}.`);
+        }
       } else if (error.response?.status === 401) {
         console.error('Authentication failed. Please check your Harvest credentials in .env file.');
       } else if (error.message.includes('Missing required environment variables')) {
@@ -152,12 +173,13 @@ Output:
    * @returns {string} Filename
    */
   generateFilename(invoice, type) {
+    const number = invoice.number.replace(/[^a-zA-Z0-9]/g, '');
+    const companyName = config.company.name.replace(/[^a-zA-Z0-9]/g, '_');
+    
     if (type === 'estimate') {
-      const number = invoice.number.replace(/[^a-zA-Z0-9]/g, '');
-      return `KOSTENVORANSCHLAG_${number}_Diluno_GmbH.pdf`;
+      return `KOSTENVORANSCHLAG_${number}_${companyName}.pdf`;
     } else {
-      const number = invoice.number.replace(/[^a-zA-Z0-9]/g, '');
-      return `RECHNUNG_${number}_Diluno_GmbH.pdf`;
+      return `RECHNUNG_${number}_${companyName}.pdf`;
     }
   }
 
@@ -187,11 +209,7 @@ Output:
         return;
       }
 
-      if (!parsed.id) {
-        console.error('❌ Error: --id parameter is required');
-        console.error('Use --help for usage information');
-        process.exit(1);
-      }
+      // ID is now optional - if not provided, we'll fetch the latest document
 
       // Validate environment before starting
       try {
