@@ -260,6 +260,7 @@ body {
   padding: 0;
   margin: 0;
   background: #fff;
+  break-before: page; /* Force QR code to start on a new page */
 }
 
 .qr-bill-container {
