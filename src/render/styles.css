@@ -32,6 +32,15 @@ body {
   }
 }
 
+/* Page break HR - Forces QR code to new page */
+.page-break-hr {
+  border: none;
+  margin: 20mm 0 0 0;
+  padding: 0;
+  height: 0;
+  break-after: page;
+}
+
 /* A4 Page dimensions */
 .invoice-page {
   width: 210mm;
@@ -260,7 +269,6 @@ body {
   padding: 0;
   margin: 0;
   background: #fff;
-  break-before: page; /* Force QR code to start on a new page */
 }
 
 .qr-bill-container {

@@ -101,6 +101,9 @@
             </tr>
           </table>
         </section>
+        
+        <!-- Page break before QR code -->
+        <hr class="page-break-hr">
 
         <!-- Notes Section -->
         {{#if notes}}
@@ -110,6 +113,7 @@
         </section>
         {{/if}}
 
+
         <!-- Payment Information -->
         <section class="payment-info">
           <div class="notes-label">Zahlungsinformationen</div>
@@ -118,8 +122,8 @@
             Vielen Dank für Ihr Vertrauen!
           </div>
         </section>
+        
       </div>
-
       <!-- Swiss QR-Bill Section - CRITICAL: Must maintain exact dimensions -->
       <section class="qr-bill-section">
         <div class="qr-bill-container">{{qrBillSVG}}</div>
